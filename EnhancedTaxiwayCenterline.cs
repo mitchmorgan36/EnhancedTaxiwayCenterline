@@ -13,7 +13,7 @@ namespace EnhancedTaxiwayCenterline
     public class EnhancedTaxiwayCenterlineCommands
     {
         private const string CommandName = "ENHANCEDCL";
-        private const string StorageRootKey = "CMT_ENHANCED_TCL";
+        private const string StorageRootKey = "ENHANCED_TCL";
         private const double EnhancementLength = 150.0;
         private const double DashLength = 9.0;
         private const double GapLength = 3.0;
@@ -364,6 +364,12 @@ namespace EnhancedTaxiwayCenterline
                 return tr.GetObject(namedObjects.GetAt(StorageRootKey), mode) as DBDictionary;
             }
 
+            DBDictionary existingStorage = FindExistingStorageDictionary(namedObjects, tr, createIfMissing);
+            if (existingStorage != null)
+            {
+                return existingStorage;
+            }
+
             if (!createIfMissing)
             {
                 return null;
@@ -375,6 +381,61 @@ namespace EnhancedTaxiwayCenterline
             namedObjects.SetAt(StorageRootKey, storage);
             tr.AddNewlyCreatedDBObject(storage, true);
             return storage;
+        }
+
+        private static DBDictionary FindExistingStorageDictionary(
+            DBDictionary namedObjects,
+            Transaction tr,
+            bool openForWrite)
+        {
+            foreach (DBDictionaryEntry entry in namedObjects)
+            {
+                if (string.Equals(entry.Key, StorageRootKey, StringComparison.Ordinal))
+                {
+                    continue;
+                }
+
+                DBDictionary candidate = tr.GetObject(entry.Value, OpenMode.ForRead, false) as DBDictionary;
+                if (candidate == null || !DictionaryLooksLikeManagedStorage(candidate, tr))
+                {
+                    continue;
+                }
+
+                if (openForWrite && !candidate.IsWriteEnabled)
+                {
+                    candidate.UpgradeOpen();
+                }
+
+                return candidate;
+            }
+
+            return null;
+        }
+
+        private static bool DictionaryLooksLikeManagedStorage(DBDictionary candidate, Transaction tr)
+        {
+            foreach (DBDictionaryEntry entry in candidate)
+            {
+                Xrecord record = tr.GetObject(entry.Value, OpenMode.ForRead, false) as Xrecord;
+                if (record?.Data == null)
+                {
+                    continue;
+                }
+
+                TypedValue[] values = record.Data.AsArray();
+                if (values.Length == 0)
+                {
+                    continue;
+                }
+
+                if (values[0].TypeCode == (int)DxfCode.Text &&
+                    string.Equals(values[0].Value as string, CommandName, StringComparison.Ordinal))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static string GetStorageKey(Handle parentHandle)

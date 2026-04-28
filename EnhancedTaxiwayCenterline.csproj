@@ -22,8 +22,13 @@
     <_TargetFrameworkDirectories>$(DotNetRuntimeRoot)</_TargetFrameworkDirectories>
     <_FullFrameworkReferenceAssemblyPaths>$(DotNetRuntimeRoot)</_FullFrameworkReferenceAssemblyPaths>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <AutoCADRoot>C:\Program Files\Autodesk\AutoCAD 2026</AutoCADRoot>
-    <DotNetRuntimeRoot>C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.26</DotNetRuntimeRoot>
+    <ProgramFiles64 Condition="'$(ProgramFiles64)' == '' and '$(ProgramW6432)' != ''">$(ProgramW6432)</ProgramFiles64>
+    <ProgramFiles64 Condition="'$(ProgramFiles64)' == ''">$(ProgramFiles)</ProgramFiles64>
+    <AutoCADVersion Condition="'$(AutoCADVersion)' == ''">2026</AutoCADVersion>
+    <DotNetRuntimeVersion Condition="'$(DotNetRuntimeVersion)' == ''">8.0.26</DotNetRuntimeVersion>
+    <AutoCADRoot Condition="'$(AutoCADRoot)' == ''">$(ProgramFiles64)\Autodesk\AutoCAD $(AutoCADVersion)</AutoCADRoot>
+    <DotNetRuntimeRoot Condition="'$(DotNetRuntimeRoot)' == ''">$(ProgramFiles64)\dotnet\shared\Microsoft.NETCore.App\$(DotNetRuntimeVersion)</DotNetRuntimeRoot>
+    <PathMap Condition="'$(PathMap)' == ''">$(MSBuildProjectDirectory)=/_/EnhancedTaxiwayCenterline</PathMap>
     <AssemblySearchPaths>$(ReferencePath);{HintPathFromItem};{TargetFrameworkDirectory};{Registry:$(FrameworkRegistryBase),$(TargetFrameworkVersion),$(AssemblyFoldersSuffix)$(AssemblyFoldersExConditions)};{AssemblyFolders};{GAC};{OutputPath}</AssemblySearchPaths>
   </PropertyGroup>
 
@@ -32,13 +37,15 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
+    <PdbFile>obj\x64\Debug\$(AssemblyName).pdb</PdbFile>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>

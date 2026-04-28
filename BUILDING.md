@@ -14,8 +14,7 @@ This project is already set up for Visual Studio. You do not need to create a ne
 ## Open The Project
 
 1. In Visual Studio, click `File` > `Open` > `Project/Solution`.
-2. Browse to this folder:
-   - `C:\Users\mmorgan\OneDrive - Crawford, Murphy & Tilly Inc\Work\Autocad\CAD File Resources\NET Scripts\EnhancedTaxiwayCenterline`
+2. Browse to the folder that contains this project.
 3. Select `EnhancedTaxiwayCenterline.sln`.
 4. Click `Open`.
 
@@ -40,7 +39,7 @@ If `Solution Explorer` is not visible:
 Near the top of Visual Studio there should be dropdowns for build settings.
 
 Set them to:
-- `Debug`
+- `Release`
 - `x64`
 
 If you do not see `x64`:
@@ -64,22 +63,20 @@ If the build works, you should see a message like:
 
 The DLL will be created here:
 
-- `bin\Debug\EnhancedTaxiwayCenterline.dll`
-
-Full path:
-
-- `C:\Users\mmorgan\OneDrive - Crawford, Murphy & Tilly Inc\Work\Autocad\CAD File Resources\NET Scripts\EnhancedTaxiwayCenterline\bin\Debug\EnhancedTaxiwayCenterline.dll`
+- `bin\Release\EnhancedTaxiwayCenterline.dll`
 
 ## Load It In AutoCAD
 
 1. Open AutoCAD.
-2. Type `NETLOAD`.
-3. Browse to:
-   - `C:\Users\mmorgan\OneDrive - Crawford, Murphy & Tilly Inc\Work\Autocad\CAD File Resources\NET Scripts\EnhancedTaxiwayCenterline\bin\Debug`
-4. Select `EnhancedTaxiwayCenterline.dll`.
-5. Click `Open`.
-6. Run the command:
-   - `ENHANCEDTCL`
+2. Make sure the folder containing `EnhancedTaxiwayCenterline.dll` is included in your AutoCAD profile's `Trusted Locations` list.
+3. In AutoCAD, open `Options`, go to the `Files` tab, expand `Trusted Locations`, and add the folder that contains the DLL if it is not already trusted.
+4. Type `NETLOAD`.
+5. Browse to:
+   - `bin\Release`
+6. Select `EnhancedTaxiwayCenterline.dll`.
+7. Click `Open`.
+8. Run the command:
+   - `ENHANCEDCL`
 
 ## If The Build Fails
 
@@ -105,25 +102,27 @@ Try:
 ### If the wrong file gets loaded in AutoCAD
 
 Always load the DLL from:
-- `bin\Debug\EnhancedTaxiwayCenterline.dll`
+- `bin\Release\EnhancedTaxiwayCenterline.dll`
 
 Do not load files from:
 - `obj`
 
-## Release Build
+## Debug Build
 
-If you later want a release build:
+If you want a development build instead:
 
-1. Change the top dropdown from `Debug` to `Release`
+1. Change the top dropdown from `Release` to `Debug`
 2. Keep platform as `x64`
 3. Build again
 
 The output will be:
 
-- `bin\Release\EnhancedTaxiwayCenterline.dll`
+- `bin\Debug\EnhancedTaxiwayCenterline.dll`
 
 ## Notes
 
+- The project file uses overrideable MSBuild properties for the AutoCAD install root and .NET runtime root, so the repository does not hardcode a user- or machine-specific path.
+- `Release` is the recommended build for loading the final plugin in AutoCAD.
 - This Visual Studio project is configured to use the AutoCAD 2026 DLL references already on this machine.
 - It is also configured to build without needing the separate `.NET SDK` that VS Code asked for.
 - The `bin` folder holds the final files you use.
