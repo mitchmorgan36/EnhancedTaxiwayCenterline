@@ -2,8 +2,6 @@
 
 AutoCAD .NET plugin for drafting FAA-style enhanced taxiway centerline markings from an existing polyline near a runway holding position.
 
-Keywords: `AutoCAD`, `AutoCAD .NET`, `FAA`, `FAA AC 150/5340-1M`, `enhanced taxiway centerline`, `airport markings`, `runway holding position`, `NETLOAD`, `lisp`, `LSP`, `airport design`.
-
 ## Overview
 
 This command takes a selected taxiway centerline polyline and builds two sets of offset dashed polylines along the first 150 drawing units. It is intended for quickly generating enhanced taxiway centerline markings in AutoCAD without manually drawing each dash segment, which is especially helpful for curved taxiways where the dash pattern needs to follow the curve. The generated geometry is based on the FAA enhanced taxiway centerline marking standard described in `AC 150/5340-1M`.
@@ -93,3 +91,5 @@ It will reject closed polylines and non-polyline entities.
 ## Building
 
 Detailed build steps are documented in [BUILDING.md](BUILDING.md).
+
+Keywords: `AutoCAD`, `AutoCAD .NET`, `FAA`, `FAA AC 150/5340-1M`, `enhanced taxiway centerline`, `airport markings`, `runway holding position`, `NETLOAD`, `lisp`, `LSP`, `airport design`.
