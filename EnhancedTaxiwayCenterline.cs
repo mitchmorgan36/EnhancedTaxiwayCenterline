@@ -20,6 +20,7 @@ namespace EnhancedTaxiwayCenterline
         private const double OffsetDistance = 1.25;
         private const double DashWidth = 0.5;
         private const double Epsilon = 1e-6;
+        private const string DevelopedByCredit = " Developed by Mitchell Morgan";
 
         [CommandMethod(CommandName)]
         public void CreateEnhancedTaxiwayCenterline()
@@ -130,7 +131,7 @@ namespace EnhancedTaxiwayCenterline
 
                     ed.WriteMessage(
                         $"\nCreated {createdIds.Count} dash polylines for the first {actualLength:0.##}' from the polyline start vertex. " +
-                        $"Removed {removedCount} prior script-generated dash polylines.{shortenedNote}");
+                        $"Removed {removedCount} prior script-generated dash polylines.{shortenedNote}{DevelopedByCredit}");
                 }
                 catch (System.Exception ex)
                 {
