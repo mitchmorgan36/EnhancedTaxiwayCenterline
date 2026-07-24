@@ -7,10 +7,11 @@ using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Runtime;
 
 [assembly: CommandClass(typeof(EnhancedTaxiwayCenterline.EnhancedTaxiwayCenterlineCommands))]
+[assembly: ExtensionApplication(typeof(EnhancedTaxiwayCenterline.EnhancedTaxiwayCenterlineCommands))]
 
 namespace EnhancedTaxiwayCenterline
 {
-    public class EnhancedTaxiwayCenterlineCommands
+    public class EnhancedTaxiwayCenterlineCommands : IExtensionApplication
     {
         private const string CommandName = "ENHANCEDCL";
         private const string StorageRootKey = "ENHANCED_TCL";
@@ -20,7 +21,24 @@ namespace EnhancedTaxiwayCenterline
         private const double OffsetDistance = 1.25;
         private const double DashWidth = 0.5;
         private const double Epsilon = 1e-6;
-        private const string DevelopedByCredit = " Developed by Mitchell Morgan";
+        private const string DevelopedByCredit = " Developed by Mitchell Morgan.";
+        private const string LoadSuccessMessage =
+            "EnhancedCL successfully loaded. Enter ENHANCEDCL to run the script." + DevelopedByCredit;
+
+        public void Initialize()
+        {
+            Document acadDoc = Application.DocumentManager.MdiActiveDocument;
+            if (acadDoc == null)
+            {
+                return;
+            }
+
+            acadDoc.Editor.WriteMessage($"\n{LoadSuccessMessage}");
+        }
+
+        public void Terminate()
+        {
+        }
 
         [CommandMethod(CommandName)]
         public void CreateEnhancedTaxiwayCenterline()
@@ -131,7 +149,7 @@ namespace EnhancedTaxiwayCenterline
 
                     ed.WriteMessage(
                         $"\nCreated {createdIds.Count} dash polylines for the first {actualLength:0.##}' from the polyline start vertex. " +
-                        $"Removed {removedCount} prior script-generated dash polylines.{shortenedNote}{DevelopedByCredit}");
+                        $"Removed {removedCount} prior script-generated dash polylines.{shortenedNote}");
                 }
                 catch (System.Exception ex)
                 {
