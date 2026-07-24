@@ -25,7 +25,7 @@
     <ProgramFiles64 Condition="'$(ProgramFiles64)' == '' and '$(ProgramW6432)' != ''">$(ProgramW6432)</ProgramFiles64>
     <ProgramFiles64 Condition="'$(ProgramFiles64)' == ''">$(ProgramFiles)</ProgramFiles64>
     <AutoCADVersion Condition="'$(AutoCADVersion)' == ''">2026</AutoCADVersion>
-    <DotNetRuntimeVersion Condition="'$(DotNetRuntimeVersion)' == ''">8.0.26</DotNetRuntimeVersion>
+    <DotNetRuntimeVersion Condition="'$(DotNetRuntimeVersion)' == ''">8.0.29</DotNetRuntimeVersion>
     <AutoCADRoot Condition="'$(AutoCADRoot)' == ''">$(ProgramFiles64)\Autodesk\AutoCAD $(AutoCADVersion)</AutoCADRoot>
     <DotNetRuntimeRoot Condition="'$(DotNetRuntimeRoot)' == ''">$(ProgramFiles64)\dotnet\shared\Microsoft.NETCore.App\$(DotNetRuntimeVersion)</DotNetRuntimeRoot>
     <PathMap Condition="'$(PathMap)' == ''">$(MSBuildProjectDirectory)=/_/EnhancedTaxiwayCenterline</PathMap>
